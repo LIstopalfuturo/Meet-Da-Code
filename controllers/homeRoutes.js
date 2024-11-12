@@ -41,20 +41,57 @@ router.get('/dashboard', withAuth, async (req, res) => {
 
         const user = userData.get({ plain: true });
 
-        // Calculate totals
-        const today = new Date().toISOString().split('T')[0];
-        const todayTotal = user.tips
-            .filter(tip => tip.shift_date.split('T')[0] === today)
-            .reduce((sum, tip) => sum + parseFloat(tip.amount), 0);
+        // Initialize totals
+        let todayTotal = 0;
+        let weekTotal = 0;
+        let monthTotal = 0;
+
+        if (user.tips && user.tips.length > 0) {
+            // Get today's date
+            const today = new Date();
+            const todayStr = today.toISOString().split('T')[0];
+
+            // Get start of week (Sunday)
+            const startOfWeek = new Date(today);
+            startOfWeek.setDate(today.getDate() - today.getDay());
+            startOfWeek.setHours(0, 0, 0, 0);
+
+            // Get start of month
+            const startOfMonth = new Date(today.getFullYear(), today.getMonth(), 1);
+
+            // Calculate totals
+            todayTotal = user.tips
+                .filter(tip => tip.shift_date.split('T')[0] === todayStr)
+                .reduce((sum, tip) => sum + Number(tip.amount), 0);
+
+            weekTotal = user.tips
+                .filter(tip => {
+                    const tipDate = new Date(tip.shift_date);
+                    return tipDate >= startOfWeek;
+                })
+                .reduce((sum, tip) => sum + Number(tip.amount), 0);
+
+            monthTotal = user.tips
+                .filter(tip => {
+                    const tipDate = new Date(tip.shift_date);
+                    return tipDate >= startOfMonth;
+                })
+                .reduce((sum, tip) => sum + Number(tip.amount), 0);
+        }
+
+        console.log('Totals:', { todayTotal, weekTotal, monthTotal }); // Debug log
 
         res.render('dashboard', {
             ...user,
-            todayTotal,
+            todayTotal: todayTotal || 0,
+            weekTotal: weekTotal || 0,
+            monthTotal: monthTotal || 0,
             logged_in: true,
             pageTitle: 'Dashboard',
             isDashboardPage: true
         });
     } catch (err) {
+        console.error('Dashboard Error:', err);
         res.status(500).json(err);
     }
 });

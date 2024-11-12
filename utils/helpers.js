@@ -5,10 +5,12 @@ module.exports = {
     },
     // Format currency
     format_amount: (amount) => {
+        // Convert to number and handle any invalid values
+        const num = Number(amount);
         return new Intl.NumberFormat('en-US', {
             style: 'currency',
             currency: 'USD',
-        }).format(amount);
+        }).format(isNaN(num) ? 0 : num);
     },
     // Calculate hourly rate
     calc_hourly: (amount, hours) => {
