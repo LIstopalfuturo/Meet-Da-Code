@@ -1,0 +1,63 @@
+<div class="container">
+    <div class="jumbotron text-center my-4">
+        <h1 class="display-4">Welcome to Tip Tracker</h1>
+        <p class="lead">Track, analyze, and optimize your tip earnings with ease.</p>
+        {{#unless logged_in}}
+        <div class="mt-4">
+            <a href="/login" class="btn btn-primary btn-lg mx-2">Login</a>
+            <a href="/login" class="btn btn-success btn-lg mx-2">Sign Up</a>
+        </div>
+        {{/unless}}
+    </div>
+
+    {{#if logged_in}}
+    <div class="row">
+        <div class="col-md-6">
+            <div class="card mb-4">
+                <div class="card-body">
+                    <h5 class="card-title">Quick Access</h5>
+                    <div class="d-grid gap-2">
+                        <a href="/dashboard" class="btn btn-primary">Go to Dashboard</a>
+                        <a href="/analytics" class="btn btn-info">View Analytics</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-6">
+            <div class="card mb-4">
+                <div class="card-body">
+                    <h5 class="card-title">Recent Activity</h5>
+                    <p>View your recent tips and analytics in the dashboard.</p>
+                </div>
+            </div>
+        </div>
+    </div>
+    {{else}}
+    <div class="row">
+        <div class="col-md-4">
+            <div class="card">
+                <div class="card-body">
+                    <h5 class="card-title">Track Tips</h5>
+                    <p class="card-text">Easily log and manage your daily tips.</p>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-4">
+            <div class="card">
+                <div class="card-body">
+                    <h5 class="card-title">Analyze Earnings</h5>
+                    <p class="card-text">View detailed analytics and trends.</p>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-4">
+            <div class="card">
+                <div class="card-body">
+                    <h5 class="card-title">Secure Storage</h5>
+                    <p class="card-text">Keep your earnings data safe and organized.</p>
+                </div>
+            </div>
+        </div>
+    </div>
+    {{/if}}
+</div>

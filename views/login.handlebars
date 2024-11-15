@@ -1,0 +1,65 @@
+<div class="row justify-content-center">
+    <div class="col-md-6">
+        <div class="auth-container fade-in">
+            <h2 class="text-center mb-4">Login</h2>
+            <form class="login-form">
+                <div class="mb-3">
+                    <label for="email-login" class="form-label">Email</label>
+                    <input type="email" class="form-control" id="email-login" 
+                           required autocomplete="email">
+                </div>
+                <div class="mb-3">
+                    <label for="password-login" class="form-label">Password</label>
+                    <div class="input-group">
+                        <input type="password" class="form-control" id="password-login" 
+                               required autocomplete="current-password">
+                        <button class="btn btn-outline-secondary toggle-password" type="button">
+                            <i class="fas fa-eye"></i>
+                        </button>
+                    </div>
+                </div>
+                <button type="submit" class="btn btn-primary w-100">Login</button>
+            </form>
+
+            <hr class="my-4">
+
+            <h2 class="text-center mb-4">Sign Up</h2>
+            <form class="signup-form">
+                <div class="mb-3">
+                    <label for="username-signup" class="form-label">Username</label>
+                    <input type="text" class="form-control" id="username-signup" 
+                           required autocomplete="username">
+                </div>
+                <div class="mb-3">
+                    <label for="email-signup" class="form-label">Email</label>
+                    <input type="email" class="form-control" id="email-signup" 
+                           required autocomplete="email">
+                </div>
+                <div class="mb-3">
+                    <label for="password-signup" class="form-label">Password</label>
+                    <div class="input-group">
+                        <input type="password" class="form-control" id="password-signup" 
+                               required autocomplete="new-password">
+                        <button class="btn btn-outline-secondary toggle-password" type="button">
+                            <i class="fas fa-eye"></i>
+                        </button>
+                    </div>
+                    <div class="form-text">
+                        Password must be at least 8 characters long and include numbers and letters.
+                    </div>
+                </div>
+                <div class="mb-3">
+                    <label for="confirm-password-signup" class="form-label">Confirm Password</label>
+                    <div class="input-group">
+                        <input type="password" class="form-control" id="confirm-password-signup" 
+                               required autocomplete="new-password">
+                        <button class="btn btn-outline-secondary toggle-password" type="button">
+                            <i class="fas fa-eye"></i>
+                        </button>
+                    </div>
+                </div>
+                <button type="submit" class="btn btn-success w-100">Sign Up</button>
+            </form>
+        </div>
+    </div>
+</div>
