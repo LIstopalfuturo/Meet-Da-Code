@@ -39,6 +39,12 @@ router.get('/dashboard', withAuth, async (req, res) => {
             }]
         });
 
+        // Check if user exists
+        if (!userData) {
+            res.redirect('/login');
+            return;
+        }
+
         const user = userData.get({ plain: true });
 
         // Initialize totals
@@ -47,39 +53,30 @@ router.get('/dashboard', withAuth, async (req, res) => {
         let monthTotal = 0;
 
         if (user.tips && user.tips.length > 0) {
-            // Get today's date
+            // Get today's date at midnight
             const today = new Date();
-            const todayStr = today.toISOString().split('T')[0];
+            today.setHours(0, 0, 0, 0);
 
             // Get start of week (Sunday)
             const startOfWeek = new Date(today);
             startOfWeek.setDate(today.getDate() - today.getDay());
-            startOfWeek.setHours(0, 0, 0, 0);
 
             // Get start of month
             const startOfMonth = new Date(today.getFullYear(), today.getMonth(), 1);
 
             // Calculate totals
             todayTotal = user.tips
-                .filter(tip => tip.shift_date.split('T')[0] === todayStr)
+                .filter(tip => new Date(tip.shift_date) >= today)
                 .reduce((sum, tip) => sum + Number(tip.amount), 0);
 
             weekTotal = user.tips
-                .filter(tip => {
-                    const tipDate = new Date(tip.shift_date);
-                    return tipDate >= startOfWeek;
-                })
+                .filter(tip => new Date(tip.shift_date) >= startOfWeek)
                 .reduce((sum, tip) => sum + Number(tip.amount), 0);
 
             monthTotal = user.tips
-                .filter(tip => {
-                    const tipDate = new Date(tip.shift_date);
-                    return tipDate >= startOfMonth;
-                })
+                .filter(tip => new Date(tip.shift_date) >= startOfMonth)
                 .reduce((sum, tip) => sum + Number(tip.amount), 0);
         }
-
-        console.log('Totals:', { todayTotal, weekTotal, monthTotal }); // Debug log
 
         res.render('dashboard', {
             ...user,
