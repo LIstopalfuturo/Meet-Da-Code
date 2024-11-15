@@ -17,8 +17,7 @@ const seedDatabase = async () => {
     // Create tips
     for (const tip of tipData) {
       await Tip.create({
-        ...tip,
-        user_id: users[Math.floor(Math.random() * users.length)].id,
+                user_id: users[Math.floor(Math.random() * users.length)].id,
       });
     }
 
@@ -31,3 +30,5 @@ const seedDatabase = async () => {
 };
 
 seedDatabase(); 
+
+
