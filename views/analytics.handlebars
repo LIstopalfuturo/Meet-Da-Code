@@ -1,0 +1,159 @@
+<div class="analytics-container fade-in">
+    {{!-- Analytics Header --}}
+    <div class="row mb-4">
+        <div class="col">
+            <h2>Tips Analytics</h2>
+            <p class="text-muted">Gain insights into your earnings</p>
+        </div>
+        <div class="col-auto">
+            <select class="form-select" id="time-range">
+                <option value="week">This Week</option>
+                <option value="month">This Month</option>
+                <option value="year">This Year</option>
+                <option value="custom">Custom Range</option>
+            </select>
+        </div>
+    </div>
+
+    {{!-- Summary Cards --}}
+    <div class="row mb-4">
+        <div class="col-md-3">
+            <div class="card">
+                <div class="card-body">
+                    <h5 class="card-title">Total Tips</h5>
+                    <p class="h3" id="total-tips">{{format_amount totalTips}}</p>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-3">
+            <div class="card">
+                <div class="card-body">
+                    <h5 class="card-title">Average Per Shift</h5>
+                    <p class="h3" id="avg-per-shift">{{format_amount avgPerShift}}</p>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-3">
+            <div class="card">
+                <div class="card-body">
+                    <h5 class="card-title">Average Hourly</h5>
+                    <p class="h3" id="avg-per-hour">{{format_amount avgHourly}}</p>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-3">
+            <div class="card">
+                <div class="card-body">
+                    <h5 class="card-title">Total Hours</h5>
+                    <p class="h3" id="total-hours">{{totalHours}}</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    {{!-- Charts Section --}}
+    <div class="row">
+        {{!-- Earnings Over Time Chart --}}
+        <div class="col-md-8">
+            <div class="card mb-4">
+                <div class="card-header">
+                    <h3>Earnings Over Time</h3>
+                </div>
+                <div class="card-body">
+                    <canvas id="earningsChart"></canvas>
+                </div>
+            </div>
+        </div>
+
+        {{!-- Shift Distribution Chart --}}
+        <div class="col-md-4">
+            <div class="card mb-4">
+                <div class="card-header">
+                    <h3>Shift Distribution</h3>
+                </div>
+                <div class="card-body">
+                    <canvas id="shiftChart"></canvas>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    {{!-- Detailed Statistics --}}
+    <div class="card">
+        <div class="card-header">
+            <h3>Detailed Statistics</h3>
+        </div>
+        <div class="card-body">
+            <div class="table-responsive">
+                <table class="table">
+                    <thead>
+                        <tr>
+                            <th>Metric</th>
+                            <th>Day Shift</th>
+                            <th>Night Shift</th>
+                            <th>Overall</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>Average Tips</td>
+                            <td data-stat="day-avg">$0.00</td>
+                            <td data-stat="night-avg">$0.00</td>
+                            <td data-stat="overall-avg">$0.00</td>
+                        </tr>
+                        <tr>
+                            <td>Best Day</td>
+                            <td>
+                                <span data-stat="day-best-date">-</span>
+                                (<span data-stat="day-best-amount">$0.00</span>)
+                            </td>
+                            <td>
+                                <span data-stat="night-best-date">-</span>
+                                (<span data-stat="night-best-amount">$0.00</span>)
+                            </td>
+                            <td>
+                                <span data-stat="overall-best-date">-</span>
+                                (<span data-stat="overall-best-amount">$0.00</span>)
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>Hours Worked</td>
+                            <td data-stat="day-hours">0.0</td>
+                            <td data-stat="night-hours">0.0</td>
+                            <td data-stat="total-hours">0.0</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
+
+{{!-- Date Range Modal --}}
+<div class="modal fade" id="dateRangeModal" tabindex="-1">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">Select Date Range</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+            </div>
+            <div class="modal-body">
+                <form id="dateRangeForm">
+                    <div class="mb-3">
+                        <label for="startDate" class="form-label">Start Date</label>
+                        <input type="date" class="form-control" id="startDate" required>
+                    </div>
+                    <div class="mb-3">
+                        <label for="endDate" class="form-label">End Date</label>
+                        <input type="date" class="form-control" id="endDate" required>
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                <button type="button" class="btn btn-primary" id="applyDateRange">Apply</button>
+            </div>
+        </div>
+    </div>
+</div>
+<script src="/js/analytics.js"></script>
