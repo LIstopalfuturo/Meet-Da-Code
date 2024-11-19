@@ -66,7 +66,11 @@ router.get('/dashboard', withAuth, async (req, res) => {
 
             // Calculate totals
             todayTotal = user.tips
-                .filter(tip => new Date(tip.shift_date) >= today)
+                .filter(tip => {
+                    const tipDate = new Date(tip.shift_date);
+                    tipDate.setHours(0, 0, 0, 0);
+                    return tipDate.getTime() === today.getTime();
+                })
                 .reduce((sum, tip) => sum + Number(tip.amount), 0);
 
             weekTotal = user.tips
