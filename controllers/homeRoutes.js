@@ -42,24 +42,16 @@ router.get('/dashboard', withAuth, async (req, res) => {
             order: [['shift_date', 'DESC']]
         });
 
-<<<<<<< HEAD
         // Serialize data
         const tips = tipData.map((tip) => tip.get({ plain: true }));
-=======
         // Check if user exists
-        if (!userData) {
-            res.redirect('/login');
-            return;
-        }
-
-        const user = userData.get({ plain: true });
 
         // Initialize totals
         let todayTotal = 0;
         let weekTotal = 0;
         let monthTotal = 0;
 
-        if (user.tips && user.tips.length > 0) {
+        if (tips && tips.length > 0) {
             // Get today's date at midnight
             const today = new Date();
             today.setHours(0, 0, 0, 0);
@@ -72,24 +64,28 @@ router.get('/dashboard', withAuth, async (req, res) => {
             const startOfMonth = new Date(today.getFullYear(), today.getMonth(), 1);
 
             // Calculate totals
-            todayTotal = user.tips
+            todayTotal = tips
                 .filter(tip => new Date(tip.shift_date) >= today)
                 .reduce((sum, tip) => sum + Number(tip.amount), 0);
 
-            weekTotal = user.tips
+            weekTotal = tips
                 .filter(tip => new Date(tip.shift_date) >= startOfWeek)
                 .reduce((sum, tip) => sum + Number(tip.amount), 0);
 
-            monthTotal = user.tips
+            monthTotal = tips
                 .filter(tip => new Date(tip.shift_date) >= startOfMonth)
                 .reduce((sum, tip) => sum + Number(tip.amount), 0);
         }
->>>>>>> cd6a66907a0535ad626388ad0f7ba1aae8e49727
+
+        console.log(tips);
+        
 
         res.render('dashboard', {
             tips,
+            todayTotal,
+            weekTotal,
+            monthTotal,
             logged_in: req.session.logged_in,
-            layout: 'dashboard'
         });
     } catch (err) {
         res.status(500).json(err);
