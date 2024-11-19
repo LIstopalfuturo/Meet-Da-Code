@@ -240,7 +240,7 @@ function updateSummaryStats(stats) {
     document.querySelector('[data-stat="total-hours"]').textContent = stats.totalHours.toFixed(1);
 }
 
-function (message, type) {
+function showAlert(message, type) {
     const alertDiv = document.createElement('div');
     alertDiv.className = `alert alert-${type} alert-dismissible fade show`;
     alertDiv.innerHTML = `
