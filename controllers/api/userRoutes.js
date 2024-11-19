@@ -58,13 +58,12 @@ router.post('/login', async (req, res) => {
 
 // POST /api/users/logout - User logout
 router.post('/logout', (req, res) => {
-    // If user is logged in, destroy the session
     if (req.session.logged_in) {
+        // Destroy the session
         req.session.destroy(() => {
             res.status(204).end();
         });
     } else {
-        // If no session exists, send 404
         res.status(404).end();
     }
 });
