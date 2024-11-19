@@ -5,9 +5,21 @@ const withAuth = require('../utils/auth');
 // Home route
 router.get('/', async (req, res) => {
     try {
+        let recentTips = [];
+        if (req.session.logged_in) {
+            recentTips = await Tip.findAll({
+                where: {
+                    user_id: req.session.user_id
+                },
+                order: [['shift_date', 'DESC']],
+                limit: 5
+            });
+        }
+
         res.render('homepage', {
             logged_in: req.session.logged_in,
-            pageTitle: 'Home'
+            pageTitle: 'Home',
+            recentTips: recentTips.map(tip => tip.get({ plain: true }))
         });
     } catch (err) {
         res.status(500).json(err);
@@ -78,7 +90,6 @@ router.get('/dashboard', withAuth, async (req, res) => {
                 .filter(tip => new Date(tip.shift_date) >= startOfMonth)
                 .reduce((sum, tip) => sum + Number(tip.amount), 0);
         }
-
         console.log(tips);
         
 
@@ -97,10 +108,29 @@ router.get('/dashboard', withAuth, async (req, res) => {
 // Analytics route
 router.get('/analytics', withAuth, async (req, res) => {
     try {
+        const tipData = await Tip.findAll({
+            where: {
+                user_id: req.session.user_id
+            },
+            order: [['shift_date', 'DESC']]
+        });
+
+        const tips = tipData.map(tip => tip.get({ plain: true }));
+
+        // Calculate analytics
+        const totalTips = tips.reduce((sum, tip) => sum + Number(tip.amount), 0);
+        const avgPerShift = tips.length ? totalTips / tips.length : 0;
+        const totalHours = tips.reduce((sum, tip) => sum + Number(tip.hours_worked), 0);
+        const avgHourly = totalHours ? totalTips / totalHours : 0;
+
         res.render('analytics', {
-            logged_in: true,
-            pageTitle: 'Analytics',
-            isAnalyticsPage: true
+            tips,
+            totalTips,
+            avgPerShift,
+            avgHourly,
+            totalHours,
+            logged_in: req.session.logged_in,
+            pageTitle: 'Analytics'
         });
     } catch (err) {
         res.status(500).json(err);

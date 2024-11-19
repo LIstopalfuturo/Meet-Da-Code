@@ -79,14 +79,12 @@ router.delete('/:id', withAuth, async (req, res) => {
     }
 });
 
-// GET /api/tips/analytics - Get tip analytics
+// GET /api/tips/analytics/:timeRange
 router.get('/analytics/:timeRange', withAuth, async (req, res) => {
     try {
-        // Get time range from params (week, month, year)
         const { timeRange } = req.params;
+        let startDate = new Date();
         
-        // Calculate start date based on time range
-        const startDate = new Date();
         switch(timeRange) {
             case 'week':
                 startDate.setDate(startDate.getDate() - 7);
@@ -97,10 +95,11 @@ router.get('/analytics/:timeRange', withAuth, async (req, res) => {
             case 'year':
                 startDate.setFullYear(startDate.getFullYear() - 1);
                 break;
+            default:
+                startDate.setDate(startDate.getDate() - 7);
         }
 
-        // Get tips within date range
-        const tipData = await Tip.findAll({
+        const tips = await Tip.findAll({
             where: {
                 user_id: req.session.user_id,
                 shift_date: {
@@ -110,9 +109,33 @@ router.get('/analytics/:timeRange', withAuth, async (req, res) => {
             order: [['shift_date', 'ASC']]
         });
 
-        res.status(200).json(tipData);
+        res.json(tips);
     } catch (err) {
         res.status(500).json(err);
+    }
+});
+
+// POST /api/tips/quick - Create quick tip entry
+router.post('/quick', withAuth, async (req, res) => {
+    try {
+        const newTip = await Tip.create({
+            amount: req.body.amount || 0,
+            shift_type: req.body.shift_type || 'day',
+            shift_date: new Date(),
+            hours_worked: req.body.hours_worked || 0,
+            notes: req.body.notes || 'Quick tip entry',
+            user_id: req.session.user_id,
+        });
+
+        if (!newTip) {
+            res.status(400).json({ message: 'Failed to create quick tip' });
+            return;
+        }
+
+        res.status(200).json(newTip);
+    } catch (err) {
+        console.error('Quick tip error:', err);
+        res.status(400).json({ message: 'Failed to create quick tip', error: err.message });
     }
 });
 
