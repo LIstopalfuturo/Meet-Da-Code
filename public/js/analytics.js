@@ -104,7 +104,7 @@ async function updateCharts() {
         updateSummaryStats(processedData.stats);
         
     } catch (err) {
-        showAlert(err.message, 'danger');
+        // showAlert(err.message, 'danger');
     }
 }
 
