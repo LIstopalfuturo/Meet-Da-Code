@@ -22,7 +22,7 @@ Tip.init(
             },
         },
         shift_type: {
-            type: DataTypes.ENUM('day', 'night'), // Only allows 'day' or 'night' values
+            type: DataTypes.STRING, // Only allows 'day' or 'night' values
             allowNull: false,
         },
         shift_date: {
