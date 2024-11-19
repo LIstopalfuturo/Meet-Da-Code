@@ -97,21 +97,30 @@
                     <tbody>
                         <tr>
                             <td>Average Tips</td>
-                            <td>{{format_amount dayShiftAvg}}</td>
-                            <td>{{format_amount nightShiftAvg}}</td>
-                            <td>{{format_amount overallAvg}}</td>
+                            <td data-stat="day-avg">$0.00</td>
+                            <td data-stat="night-avg">$0.00</td>
+                            <td data-stat="overall-avg">$0.00</td>
                         </tr>
                         <tr>
                             <td>Best Day</td>
-                            <td>{{format_date bestDayShift}} ({{format_amount bestDayAmount}})</td>
-                            <td>{{format_date bestNightShift}} ({{format_amount bestNightAmount}})</td>
-                            <td>{{format_date bestOverall}} ({{format_amount bestOverallAmount}})</td>
+                            <td>
+                                <span data-stat="day-best-date">-</span>
+                                (<span data-stat="day-best-amount">$0.00</span>)
+                            </td>
+                            <td>
+                                <span data-stat="night-best-date">-</span>
+                                (<span data-stat="night-best-amount">$0.00</span>)
+                            </td>
+                            <td>
+                                <span data-stat="overall-best-date">-</span>
+                                (<span data-stat="overall-best-amount">$0.00</span>)
+                            </td>
                         </tr>
                         <tr>
                             <td>Hours Worked</td>
-                            <td>{{dayHours}}</td>
-                            <td>{{nightHours}}</td>
-                            <td>{{totalHours}}</td>
+                            <td data-stat="day-hours">0.0</td>
+                            <td data-stat="night-hours">0.0</td>
+                            <td data-stat="total-hours">0.0</td>
                         </tr>
                     </tbody>
                 </table>

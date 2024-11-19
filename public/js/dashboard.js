@@ -13,6 +13,10 @@ document.addEventListener('DOMContentLoaded', () => {
     
     // Load initial data
     loadTipData();
+    
+    // Set up modal initialization
+    const newTipModal = document.getElementById('newTipModal');
+    newTipModal.addEventListener('show.bs.modal', setDefaultDate);
 });
 
 // Initialize all event listeners
@@ -117,4 +121,15 @@ const showAlert = (message, type) => {
     setTimeout(() => {
         alertDiv.remove();
     }, 5000);
+};
+
+// Add this new function
+const setDefaultDate = () => {
+    const today = new Date();
+    const year = today.getFullYear();
+    const month = String(today.getMonth() + 1).padStart(2, '0');
+    const day = String(today.getDate()).padStart(2, '0');
+    const formattedDate = `${year}-${month}-${day}`;
+    
+    document.querySelector('#shift-date').value = formattedDate;
 };

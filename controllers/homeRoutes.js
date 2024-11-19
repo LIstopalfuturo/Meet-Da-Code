@@ -64,8 +64,10 @@ router.get('/dashboard', withAuth, async (req, res) => {
             const startOfMonth = new Date(today.getFullYear(), today.getMonth(), 1);
 
             // Calculate totals
+
             todayTotal = tips
                 .filter(tip => new Date(tip.shift_date) >= today)
+
                 .reduce((sum, tip) => sum + Number(tip.amount), 0);
 
             weekTotal = tips
