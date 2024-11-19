@@ -14,45 +14,44 @@ router.get('/', async (req, res) => {
     }
 });
 
-// Login route
+// Separate login and signup routes
 router.get('/login', (req, res) => {
-    // If already logged in, redirect to dashboard
     if (req.session.logged_in) {
         res.redirect('/dashboard');
         return;
     }
-    res.render('login', {
-        pageTitle: 'Login',
-        isLoginPage: true
-    });
+    res.render('login');
+});
+
+router.get('/signup', (req, res) => {
+    if (req.session.logged_in) {
+        res.redirect('/dashboard');
+        return;
+    }
+    res.render('signup');
 });
 
 // Dashboard route
 router.get('/dashboard', withAuth, async (req, res) => {
     try {
-        // Get user data
-        const userData = await User.findByPk(req.session.user_id, {
-            attributes: { exclude: ['password'] },
-            include: [{
-                model: Tip,
-                order: [['shift_date', 'DESC']]
-            }]
+        // Get user's tips with most recent first
+        const tipData = await Tip.findAll({
+            where: {
+                user_id: req.session.user_id
+            },
+            order: [['shift_date', 'DESC']]
         });
 
+        // Serialize data
+        const tips = tipData.map((tip) => tip.get({ plain: true }));
         // Check if user exists
-        if (!userData) {
-            res.redirect('/login');
-            return;
-        }
-
-        const user = userData.get({ plain: true });
 
         // Initialize totals
         let todayTotal = 0;
         let weekTotal = 0;
         let monthTotal = 0;
 
-        if (user.tips && user.tips.length > 0) {
+        if (tips && tips.length > 0) {
             // Get today's date at midnight
             const today = new Date();
             today.setHours(0, 0, 0, 0);
@@ -65,30 +64,32 @@ router.get('/dashboard', withAuth, async (req, res) => {
             const startOfMonth = new Date(today.getFullYear(), today.getMonth(), 1);
 
             // Calculate totals
-            todayTotal = user.tips
+
+            todayTotal = tips
                 .filter(tip => new Date(tip.shift_date) >= today)
+
                 .reduce((sum, tip) => sum + Number(tip.amount), 0);
 
-            weekTotal = user.tips
+            weekTotal = tips
                 .filter(tip => new Date(tip.shift_date) >= startOfWeek)
                 .reduce((sum, tip) => sum + Number(tip.amount), 0);
 
-            monthTotal = user.tips
+            monthTotal = tips
                 .filter(tip => new Date(tip.shift_date) >= startOfMonth)
                 .reduce((sum, tip) => sum + Number(tip.amount), 0);
         }
 
+        console.log(tips);
+        
+
         res.render('dashboard', {
-            ...user,
-            todayTotal: todayTotal || 0,
-            weekTotal: weekTotal || 0,
-            monthTotal: monthTotal || 0,
-            logged_in: true,
-            pageTitle: 'Dashboard',
-            isDashboardPage: true
+            tips,
+            todayTotal,
+            weekTotal,
+            monthTotal,
+            logged_in: req.session.logged_in,
         });
     } catch (err) {
-        console.error('Dashboard Error:', err);
         res.status(500).json(err);
     }
 });
@@ -100,6 +101,18 @@ router.get('/analytics', withAuth, async (req, res) => {
             logged_in: true,
             pageTitle: 'Analytics',
             isAnalyticsPage: true
+        });
+    } catch (err) {
+        res.status(500).json(err);
+    }
+});
+
+// Add analytics route
+router.get('/dashboard/analytics', withAuth, async (req, res) => {
+    try {
+        res.render('analytics', {
+            logged_in: req.session.logged_in,
+            layout: 'dashboard'
         });
     } catch (err) {
         res.status(500).json(err);
