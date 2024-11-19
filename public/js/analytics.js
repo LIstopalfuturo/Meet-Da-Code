@@ -104,8 +104,12 @@ async function updateCharts() {
         updateSummaryStats(processedData.stats);
         
     } catch (err) {
+
         console.error('Error updating charts:', err);
         showAlert('Failed to load analytics data. Please try again later.', 'danger');
+
+        
+
     }
 }
 
@@ -236,7 +240,7 @@ function updateSummaryStats(stats) {
     document.querySelector('[data-stat="total-hours"]').textContent = stats.totalHours.toFixed(1);
 }
 
-function showAlert(message, type) {
+function (message, type) {
     const alertDiv = document.createElement('div');
     alertDiv.className = `alert alert-${type} alert-dismissible fade show`;
     alertDiv.innerHTML = `
