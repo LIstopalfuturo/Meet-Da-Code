@@ -12,7 +12,13 @@ const userData = [
         username: 'bjacsel21',
         email: 'bjacsel21@gmail.com',
         password: 'password123'
-    }
+    },
+    {
+    username:'Alberto',
+      email:'alberto@gmail.com',
+    password:'password123'
+    },
+
 ];
 
 // Tip seed data
@@ -83,6 +89,42 @@ const tipData = [
         shift_type: 'day',
         hours_worked: 5.5,
         notes: 'Slow Monday lunch'
+    },
+    // Tips for third user (Alberto)
+    {
+        amount: 142.50,
+        shift_date: '2024-11-11',
+        shift_type: 'night',
+        hours_worked: 7,
+        notes: 'Monday dinner rush'
+    },
+    {
+        amount: 98.75,
+        shift_date: '2024-11-12',
+        shift_type: 'day',
+        hours_worked: 6,
+        notes: 'Tuesday lunch shift'
+    },
+    {
+        amount: 167.25,
+        shift_date: '2024-11-13',
+        shift_type: 'night',
+        hours_worked: 8,
+        notes: 'Wednesday bar crowd'
+    },
+    {
+        amount: 185.00,
+        shift_date: '2024-11-14',
+        shift_type: 'night',
+        hours_worked: 8.5,
+        notes: 'Thursday night, college crowd'
+    },
+    {
+        amount: 225.50,
+        shift_date: '2024-11-15',
+        shift_type: 'night',
+        hours_worked: 9,
+        notes: 'Busy Friday night'
     }
 ];
 const seedDatabase = async () => {
@@ -95,8 +137,15 @@ const seedDatabase = async () => {
         });
         // Distribute tips between users
         const tipPromises = tipData.map((tip, index) => {
-            // Assign first 5 tips to first user, rest to second user
-            const userId = index < 5 ? users[0].id : users[1].id;
+            // Assign first 5 tips to first user, next 3 to second user, last 5 to third user
+            let userId;
+            if (index < 5) {
+                userId = users[0].id;  // First 5 tips to first user
+            } else if (index < 8) {
+                userId = users[1].id;  // Next 3 tips to second user
+            } else {
+                userId = users[2].id;  // Last 5 tips to third user
+            }
             return Tip.create({
                 ...tip,
                 user_id: userId
