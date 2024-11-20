@@ -1,5 +1,5 @@
-const User = require('./user');
-const Tip = require('./tip');
+const User = require('./Users');
+const Tip = require('./Tip');
 
 // Define relationships between models
 
