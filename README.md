@@ -39,7 +39,12 @@ Tip Tracker is a comprehensive web application designed for bartenders to track,
 - [Other libraries to be added]
 
 ## Credits
-Developed by Marcello Romero
+Developed by
+
+- Marcello Romero
+- Jacsel Bermudez
+- Jonathan Gomez
+- Alberto C. Gracia
 
 ## License
 This project is licensed under the MIT License.
