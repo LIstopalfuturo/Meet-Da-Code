@@ -8,7 +8,7 @@ const logout = async () => {
         });
 
         if (response.ok) {
-            document.location.replace('/login');
+            document.location.replace('/');
         } else {
             throw new Error('Failed to log out.');
         }
@@ -18,13 +18,12 @@ const logout = async () => {
     }
 };
 
-// Wait for DOM to be fully loaded
 document.addEventListener('DOMContentLoaded', () => {
     const logoutButton = document.querySelector('#logout-btn');
     if (logoutButton) {
-        console.log('Logout button found');
-        logoutButton.addEventListener('click', logout);
-    } else {
-        console.log('Logout button not found');
+        logoutButton.addEventListener('click', (e) => {
+            e.preventDefault();
+            logout();
+        });
     }
 }); 
