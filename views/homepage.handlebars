@@ -21,7 +21,6 @@
                         <div class="d-flex justify-content-evenly">
                             <a href="/dashboard" class="btn btn-primary">Go to Dashboard</a>
                             <a href="/analytics" class="btn btn-info">View Analytics</a>
-                            <button class="btn btn-success" id="quickTipBtn">Add Quick Tip</button>
                         </div>
                     </div>
                 </div>
@@ -78,27 +77,3 @@
         {{/if}}
     </div>
 </div>
-
-{{#if logged_in}}
-<script>
-document.getElementById('quickTipBtn').addEventListener('click', async () => {
-    try {
-        const response = await fetch('/api/tips/quick', {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json',
-            },
-        });
-
-        if (response.ok) {
-            window.location.reload();
-        } else {
-            alert('Failed to add quick tip');
-        }
-    } catch (err) {
-        console.error('Error:', err);
-        alert('Failed to add quick tip');
-    }
-});
-</script>
-{{/if}}
