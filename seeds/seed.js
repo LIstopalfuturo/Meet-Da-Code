@@ -14,11 +14,10 @@ const userData = [
         password: 'password123'
     },
     {
-    username:'Alberto',
-      email:'alberto@gmail.com',
-    password:'password123'
+        username:'Alberto',
+        email:'alberto@gmail.com',
+        password:'password123'
     },
-
 ];
 
 // Tip seed data
@@ -33,7 +32,6 @@ const tipData = [
     },
     {
         amount: 120.00,
-
         shift_date: '2024-11-16',
         shift_type: 'day',
         hours_worked: 6,
@@ -41,25 +39,20 @@ const tipData = [
     },
     {
         amount: 175.50,
-
         shift_date: '2024-11-17',
-
         shift_type: 'night',
         hours_worked: 7.5,
         notes: 'Live music night, great turnout'
     },
     {
         amount: 95.00,
-
         shift_date: '2024-11-18',
-
         shift_type: 'day',
         hours_worked: 5,
         notes: 'Regular Thursday lunch'
     },
     {
         amount: 210.00,
-
         shift_date: '2024-11-19',
         shift_type: 'night',
         hours_worked: 9,
@@ -68,7 +61,6 @@ const tipData = [
     // Tips for second user (bjacsel21)
     {
         amount: 165.75,
-
         shift_date: '2024-11-20',
         shift_type: 'night',
         hours_worked: 8,
@@ -76,7 +68,6 @@ const tipData = [
     },
     {
         amount: 120.25,
-
         shift_date: '2024-11-21',
         shift_type: 'day',
         hours_worked: 7,
@@ -84,7 +75,6 @@ const tipData = [
     },
     {
         amount: 78.50,
-
         shift_date: '2024-11-22',
         shift_type: 'day',
         hours_worked: 5.5,
@@ -128,22 +118,6 @@ const tipData = [
     }
 ];
 const seedDatabase = async () => {
-<<<<<<< HEAD
-  try {
-    await sequelize.sync({ force: true });
-
-    // Create users
-    const users = await User.bulkCreate(userData, {
-      individualHooks: true,
-      returning: true,
-    });
-
-    // Create tips
-    for (const tip of tipData) {
-      await Tip.create({
-                user_id: users[Math.floor(Math.random() * users.length)].id,
-      });
-=======
     try {
         // Sync and clear the database
         await sequelize.sync({ force: true });
@@ -173,15 +147,7 @@ const seedDatabase = async () => {
     } catch (err) {
         console.error('Error seeding database:', err);
         process.exit(1);
->>>>>>> a225f3df54df04665c615127a826ed8f5bc54485
     }
-
-    console.log('Database seeded!');
-    process.exit(0);
-  } catch (err) {
-    console.error(err);
-    process.exit(1);
-  }
 };
 seedDatabase(); 
 
