@@ -30,6 +30,15 @@ if (process.env.DATABASE_URL) {
   );
 }
 
+sequelize
+    .authenticate()
+    .then(() => {
+        console.log('Database connection established successfully.');
+    })
+    .catch(err => {
+        console.error('Unable to connect to the database:', err);
+    });
+
 module.exports = sequelize;
 // Create connection to database
 
